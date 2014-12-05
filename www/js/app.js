@@ -31,18 +31,20 @@ var app = {
 
     parseGoogleResults: function(data) {
         var country = data.results[0].address_components[0].long_name;
+        // The country name is different on Google's API than it is in the countryData list.
         if (country == "United States") {
             var country = "U.S.A.";
-            var countryObj = app.countryCollection.where({name: country})[0].attributes;
-            var countryElem = $("#country-" + countryObj.id.toString());
-            $('html, body').animate({
-                scrollTop: $(countryElem).offset().top + 'px'
-            }, 'fast')
         }
+        // Get the country's element by ID and autoscroll to it
+        var countryObj = app.countryCollection.where({name: country})[0].attributes;
+        var countryElem = $("#country-" + countryObj.id.toString());
+        $('html, body').animate({
+            scrollTop: $(countryElem).offset().top + 'px'
+        }, 'fast')
     },
 
     callGoogleApi: function(position) {
-        var APIKEY = "AIzaSyBhPuVKzof3rM6kPSzo178s40Ek0H4sVYo"
+        var APIKEY = "AIzaSyBhPuVKzof3rM6kPSzo178s40Ek0H4sVYo" // yeeeah it's hardcoded :/
         var lat = position.coords.latitude;
         var lon = position.coords.longitude;
         var endpoint = "https://maps.googleapis.com/maps/api/geocode/json?key="+APIKEY+"&result_type=country&latlng="+lat.toString()+","+lon.toString();
